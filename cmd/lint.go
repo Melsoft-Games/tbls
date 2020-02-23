@@ -24,9 +24,10 @@ import (
 	"fmt"
 	"os"
 	"reflect"
+	"strings"
 
-	"github.com/k1LoW/tbls/config"
-	"github.com/k1LoW/tbls/datasource"
+	"github.com/Melsoft-Games/tbls/config"
+	"github.com/Melsoft-Games/tbls/datasource"
 	"github.com/labstack/gommon/color"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -94,11 +95,11 @@ func loadLintArgs(args []string) ([]config.Option, error) {
 		return options, errors.WithStack(errors.New("too many arguments"))
 	}
 	if len(args) == 2 {
-		options = append(options, config.DSN(args[0]))
+		options = append(options, config.DSN(strings.Split(args[0], ";")))
 		options = append(options, config.DocPath(args[1]))
 	}
 	if len(args) == 1 {
-		options = append(options, config.DSN(args[0]))
+		options = append(options, config.DSN(strings.Split(args[0], ";")))
 	}
 	return options, nil
 }

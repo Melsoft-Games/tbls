@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/k1LoW/tbls/schema"
+	"github.com/Melsoft-Games/tbls/schema"
 )
 
 func TestOutputSchema(t *testing.T) {

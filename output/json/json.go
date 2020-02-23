@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io"
 
-	"github.com/k1LoW/tbls/schema"
+	"github.com/Melsoft-Games/tbls/schema"
 )
 
 // JSON struct

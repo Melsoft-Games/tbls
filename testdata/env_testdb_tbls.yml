@@ -1,3 +1,4 @@
 ---
-dsn: pg://root:${TBLS_TEST_PG_PASS}@localhost:55432/testdb?sslmode=disable
+dsn:
+  - pg://root:${TBLS_TEST_PG_PASS}@localhost:55432/testdb?sslmode=disable
 docPath: ${TBLS_TEST_PG_DOC_PATH}

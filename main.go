@@ -21,12 +21,10 @@
 package main
 
 import (
-	_ "github.com/denisenkom/go-mssqldb"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
-	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/k1LoW/tbls/cmd"
+	"github.com/Melsoft-Games/tbls/cmd"
 )
 
 func main() {

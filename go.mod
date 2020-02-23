@@ -1,4 +1,4 @@
-module github.com/k1LoW/tbls
+module github.com/Melsoft-Games/tbls
 
 require (
 	cloud.google.com/go v0.47.0 // indirect

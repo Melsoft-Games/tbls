@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/k1LoW/tbls/schema"
+	"github.com/Melsoft-Games/tbls/schema"
 	"github.com/pkg/errors"
 )
 
@@ -34,9 +34,6 @@ SELECT table_name, table_type, table_comment FROM information_schema.tables WHER
 		return errors.WithStack(err)
 	}
 
-	relations := []*schema.Relation{}
-
-	tables := []*schema.Table{}
 	for tableRows.Next() {
 		var (
 			tableName    string
@@ -208,7 +205,7 @@ GROUP BY kcu.constraint_name, sub.costraint_type, kcu.referenced_table_name`, ta
 					Table: table,
 					Def:   constraintDef,
 				}
-				relations = append(relations, relation)
+				s.Relations = append(s.Relations, relation)
 			case "UNKNOWN":
 				constraintDef = fmt.Sprintf("UNKNOWN CONSTRAINT (%s) (%s) (%s)", constraintColumnName, constraintRefTableName.String, constraintRefColumnName.String)
 			}
@@ -304,13 +301,11 @@ WHERE table_schema = ? AND table_name = ? ORDER BY ordinal_position`, s.Name, ta
 		}
 		table.Columns = columns
 
-		tables = append(tables, table)
+		s.Tables = append(s.Tables, table)
 	}
 
-	s.Tables = tables
-
 	// Relations
-	for _, r := range relations {
+	for _, r := range s.Relations {
 		result := reFK.FindAllStringSubmatch(r.Def, -1)
 		strColumns := strings.Split(result[0][1], ", ")
 		strParentTable := result[0][2]
@@ -337,8 +332,6 @@ WHERE table_schema = ? AND table_name = ? ORDER BY ordinal_position`, s.Name, ta
 			column.ChildRelations = append(column.ChildRelations, r)
 		}
 	}
-
-	s.Relations = relations
 
 	return nil
 }

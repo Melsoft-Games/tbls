@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/k1LoW/tbls/config"
-	"github.com/k1LoW/tbls/schema"
+	"github.com/Melsoft-Games/tbls/config"
+	"github.com/Melsoft-Games/tbls/schema"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 )

@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/k1LoW/tbls/schema"
+	"github.com/Melsoft-Games/tbls/schema"
 )
 
 // Bigquery struct
@@ -29,7 +29,6 @@ func (b *Bigquery) Analyze(s *schema.Schema) error {
 	bt := b.client.Dataset(b.datasetID).Tables(b.ctx)
 
 	// tables
-	tables := []*schema.Table{}
 	for {
 		t, err := bt.Next()
 		if err != nil {
@@ -43,8 +42,7 @@ func (b *Bigquery) Analyze(s *schema.Schema) error {
 			return err
 		}
 
-		splitted := strings.Split(m.FullID, fmt.Sprintf("%s.", b.datasetID))
-
+		splitted := strings.Split(m.FullID, ":")
 		table := &schema.Table{
 			Name:    strings.Join(splitted[1:], ""),
 			Comment: m.Description,
@@ -53,9 +51,8 @@ func (b *Bigquery) Analyze(s *schema.Schema) error {
 			Columns: listColumns(m.Schema, ""),
 		}
 
-		tables = append(tables, table)
+		s.Tables = append(s.Tables, table)
 	}
-	s.Tables = tables
 	return nil
 }
 

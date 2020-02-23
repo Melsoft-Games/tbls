@@ -23,10 +23,11 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"strings"
 
-	"github.com/k1LoW/tbls/config"
-	"github.com/k1LoW/tbls/datasource"
-	"github.com/k1LoW/tbls/output/md"
+	"github.com/Melsoft-Games/tbls/config"
+	"github.com/Melsoft-Games/tbls/datasource"
+	"github.com/Melsoft-Games/tbls/output/md"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -97,11 +98,11 @@ func loadDiffArgs(args []string) ([]config.Option, error) {
 	}
 	options = append(options, config.ERFormat(erFormat))
 	if len(args) == 2 {
-		options = append(options, config.DSN(args[0]))
+		options = append(options, config.DSN(strings.Split(args[0], ";")))
 		options = append(options, config.DocPath(args[1]))
 	}
 	if len(args) == 1 {
-		options = append(options, config.DSN(args[0]))
+		options = append(options, config.DSN(strings.Split(args[0], ";")))
 	}
 	return options, nil
 }

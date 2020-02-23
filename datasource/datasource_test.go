@@ -5,21 +5,19 @@ import (
 	"path/filepath"
 	"testing"
 
-	_ "github.com/denisenkom/go-mssqldb"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 )
 
 var tests = []struct {
-	dsn           string
+	dsn           []string
 	schemaName    string
 	tableCount    int
 	relationCount int
 }{
-	{"my://root:mypass@localhost:33306/testdb", "testdb", 9, 6},
-	{"pg://postgres:pgpass@localhost:55432/testdb?sslmode=disable", "testdb", 11, 8},
-	{"json://../testdata/testdb.json", "testdb", 7, 9},
-	{"ms://SA:MSSQLServer-Passw0rd@localhost:11433/testdb", "testdb", 9, 6},
+	{[]string{"my://root:mypass@localhost:33306/testdb"}, "MySQL schema", 9, 6},
+	{[]string{"pg://postgres:pgpass@localhost:55432/testdb?sslmode=disable"}, "Postgres schema", 11, 8},
+	{[]string{"json://../testdata/testdb.json"}, "testdb", 7, 9},
 }
 
 func TestMain(m *testing.M) {
@@ -27,12 +25,12 @@ func TestMain(m *testing.M) {
 	if _, err := os.Lstat(cPath); err == nil {
 		os.Setenv("GOOGLE_APPLICATION_CREDENTIALS", cPath)
 		bqTest := struct {
-			dsn           string
+			dsn           []string
 			schemaName    string
 			tableCount    int
 			relationCount int
 		}{
-			"bq://bigquery-public-data/bitcoin_blockchain", "bigquery-public-data:bitcoin_blockchain", 2, 0,
+			[]string{"bq://bigquery-public-data/bitcoin_blockchain"}, "bigquery-public-data:bitcoin_blockchain", 2, 0,
 		}
 		tests = append(tests, bqTest)
 	}

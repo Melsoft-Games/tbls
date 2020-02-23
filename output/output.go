@@ -3,7 +3,7 @@ package output
 import (
 	"io"
 
-	"github.com/k1LoW/tbls/schema"
+	"github.com/Melsoft-Games/tbls/schema"
 )
 
 // Output is interface for output

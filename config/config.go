@@ -11,7 +11,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/k1LoW/tbls/schema"
+	"github.com/Melsoft-Games/tbls/schema"
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 )
@@ -24,7 +24,7 @@ const DefaultERFormat = "png"
 
 // Config is tbls config
 type Config struct {
-	DSN         string               `yaml:"dsn"`
+	DSN         []string             `yaml:"dsn"`
 	DocPath     string               `yaml:"docPath"`
 	Format      Format               `yaml:"format"`
 	ER          ER                   `yaml:"er"`
@@ -68,7 +68,7 @@ type AdditionalComment struct {
 type Option func(*Config) error
 
 // DSN return Option set Config.DSN
-func DSN(dsn string) Option {
+func DSN(dsn []string) Option {
 	return func(c *Config) error {
 		c.DSN = dsn
 		return nil
@@ -124,7 +124,7 @@ func ERFormat(erFormat string) Option {
 // NewConfig return Config
 func NewConfig() (*Config, error) {
 	c := Config{
-		DSN:     "",
+		DSN:     []string{""},
 		DocPath: "",
 	}
 	return &c, nil
@@ -164,7 +164,7 @@ func (c *Config) Load(configPath string, options ...Option) error {
 func (c *Config) LoadEnviron() error {
 	dsn := os.Getenv("TBLS_DSN")
 	if dsn != "" {
-		c.DSN = dsn
+		c.DSN = strings.Split(dsn, ";")
 	}
 	docPath := os.Getenv("TBLS_DOC_PATH")
 	if docPath != "" {
@@ -197,9 +197,11 @@ func (c *Config) LoadConfigFile(path string) error {
 		return errors.Wrap(errors.WithStack(err), "failed to load config file")
 	}
 
-	c.DSN, err = parseWithEnviron(c.DSN)
-	if err != nil {
-		return errors.Wrap(errors.WithStack(err), "failed to load config file")
+	for i, d := range c.DSN {
+		c.DSN[i], err = parseWithEnviron(d)
+		if err != nil {
+			return errors.Wrap(errors.WithStack(err), "failed to load config file")
+		}
 	}
 	c.DocPath, err = parseWithEnviron(c.DocPath)
 	if err != nil {
@@ -299,9 +301,9 @@ func excludeTableFromSchema(name string, s *schema.Schema) error {
 
 // MaskedDSN return DSN mask password
 func (c *Config) MaskedDSN() (string, error) {
-	u, err := url.Parse(c.DSN)
+	u, err := url.Parse(c.DSN[0])
 	if err != nil {
-		return c.DSN, errors.WithStack(err)
+		return c.DSN[0], errors.WithStack(err)
 	}
 	tmp := "-----tbls-----"
 	u.User = url.UserPassword(u.User.Username(), tmp)

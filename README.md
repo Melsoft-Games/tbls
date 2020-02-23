@@ -1,10 +1,10 @@
 <p align="center">
 <br>
-<img src="https://github.com/k1LoW/tbls/raw/master/logo.png" width="200" alt="tbls">
+<img src="https://github.com/Melsoft-Games/tbls/raw/master/logo.png" width="200" alt="tbls">
 <br><br>
 </p>
 
-[![Build Status](https://github.com/k1LoW/tbls/workflows/build/badge.svg)](https://github.com/k1LoW/tbls/actions) [![GitHub release](https://img.shields.io/github/release/k1LoW/tbls.svg)](https://github.com/k1LoW/tbls/releases) [![codecov](https://codecov.io/gh/k1LoW/tbls/branch/master/graph/badge.svg)](https://codecov.io/gh/k1LoW/tbls) [![Go Report Card](https://goreportcard.com/badge/github.com/k1LoW/tbls)](https://goreportcard.com/report/github.com/k1LoW/tbls) [![Docker Build](https://img.shields.io/docker/cloud/build/k1low/tbls)](https://hub.docker.com/r/k1low/tbls)
+[![Build Status](https://github.com/Melsoft-Games/tbls/workflows/build/badge.svg)](https://github.com/Melsoft-Games/tbls/actions) [![GitHub release](https://img.shields.io/github/release/Melsoft-Games/tbls.svg)](https://github.com/Melsoft-Games/tbls/releases) [![codecov](https://codecov.io/gh/Melsoft-Games/tbls/branch/master/graph/badge.svg)](https://codecov.io/gh/Melsoft-Games/tbls) [![Go Report Card](https://goreportcard.com/badge/github.com/Melsoft-Games/tbls)](https://goreportcard.com/report/github.com/Melsoft-Games/tbls) [![Docker Build](https://img.shields.io/docker/cloud/build/k1low/tbls)](https://hub.docker.com/r/k1low/tbls)
 
 `tbls` is a CI-Friendly tool for document a database, written in Go.
 
@@ -48,34 +48,12 @@ Document a database with one command.
 $ tbls doc postgres://dbuser:dbpass@hostname:5432/dbname
 ```
 
-Using docker image.
-
-```console
-$ docker run --rm -v $PWD:/work k1low/tbls doc postgres://dbuser:dbpass@hostname:5432/dbname
-```
-
 ## Install
-
-**homebrew tap:**
-
-```console
-$ brew install k1LoW/tap/tbls
-```
-
-**manually:**
-
-Download binary from [releases page](https://github.com/k1LoW/tbls/releases)
 
 **go get:**
 
 ```console
-$ go get github.com/k1LoW/tbls
-```
-
-**docker:**
-
-```console
-$ docker pull k1low/tbls:latest
+$ go get github.com/Melsoft-Games/tbls
 ```
 
 ## Getting Started
@@ -88,7 +66,8 @@ Add `.tbls.yml` file to your repository.
 # .tbls.yml
 
 # DSN (Database Source Name) to connect database
-dsn: postgres://dbuser:dbpass@localhost:5432/dbname
+dsn: 
+    - postgres://dbuser:dbpass@localhost:5432/dbname
 
 # Path to generate document
 # Default is `dbdoc`
@@ -229,14 +208,16 @@ script:
 
 ``` yaml
 # .tbls.yml
-dsn: my://dbuser:dbpass@hostname:3306/dbname
+dsn: 
+    - my://dbuser:dbpass@hostname:3306/dbname
 ```
 
 `DSN:` can expand environment variables.
 
 ``` yaml
 # .tbls.yml
-dsn: my://${MYSQL_USER}:${MYSQL_PASSWORD}@hostname:3306/${MYSQL_DATABASE}
+dsn: 
+    - my://${MYSQL_USER}:${MYSQL_PASSWORD}@hostname:3306/${MYSQL_DATABASE}
 ```
 
 #### Support Database
@@ -247,48 +228,42 @@ tbls support following databases.
 
 ``` yaml
 # .tbls.yml
-dsn: postgres://dbuser:dbpass@hostname:5432/dbname
+dsn: 
+    - postgres://dbuser:dbpass@hostname:5432/dbname
 ```
 
 ``` yaml
 # .tbls.yml
-dsn: pg://dbuser:dbpass@hostname:5432/dbname
+dsn: 
+    - pg://dbuser:dbpass@hostname:5432/dbname
 ```
 
 **MySQL:**
 
 ``` yaml
 # .tbls.yml
-dsn: mysql://dbuser:dbpass@hostname:3306/dbname
+dsn: 
+    - mysql://dbuser:dbpass@hostname:3306/dbname
 ```
 
 ``` yaml
 # .tbls.yml
-dsn: my://dbuser:dbpass@hostname:3306/dbname
-```
-
-**SQLite:**
-
-``` yaml
-# .tbls.yml
-dsn: sqlite:///path/to/dbname.db
-```
-
-``` yaml
-# .tbls.yml
-dsn: sq:///path/to/dbname.db
+dsn: 
+    - my://dbuser:dbpass@hostname:3306/dbname
 ```
 
 **BigQuery:**
 
 ``` yaml
 # .tbls.yml
-dsn: bigquery://project-id/dataset-id?creds=/path/to/google_application_credentials.json
+dsn: 
+    - bigquery://project-id/dataset-id?creds=/path/to/google_application_credentials.json
 ```
 
 ``` yaml
 # .tbls.yml
-dsn: bq://project-id/dataset-id?creds=/path/to/google_application_credentials.json
+dsn: 
+    - bq://project-id/dataset-id?creds=/path/to/google_application_credentials.json
 ```
 
 To set `GOOGLE_APPLICATION_CREDENTIALS` environment variable, you can use
@@ -298,50 +273,6 @@ To set `GOOGLE_APPLICATION_CREDENTIALS` environment variable, you can use
     - `?google_application_credentials=/path/to/client_secrets.json`
     - `?credentials=/path/to/client_secrets.json`
     - `?creds=/path/to/client_secrets.json`
-
-**Cloud Spanner:**
-
-``` yaml
-# .tbls.yml
-dsn: spanner://project-id/instance-id/dbname?creds=/path/to/google_application_credentials.json
-```
-
-To set `GOOGLE_APPLICATION_CREDENTIALS` environment variable, you can use
-
-1. `export GOOGLE_APPLICATION_CREDENTIALS` or `env GOOGLE_APPLICATION_CREDENTIALS`
-2. Add query to DSN
-    - `?google_application_credentials=/path/to/client_secrets.json`
-    - `?credentials=/path/to/client_secrets.json`
-    - `?creds=/path/to/client_secrets.json`
-
-**Amazon Redshift:**
-
-``` yaml
-# .tbls.yml
-dsn: redshift://dbuser:dbpass@hostname:5432/dbname
-```
-
-``` yaml
-# .tbls.yml
-dsn: rs://dbuser:dbpass@hostname:5432/dbname
-```
-
-**Microsoft SQL Server:**
-
-``` yaml
-# .tbls.yml
-dsn: mssql://DbUser:SQLServer-DbPassw0rd@hostname:1433/testdb
-```
-
-``` yaml
-# .tbls.yml
-dsn: sqlserver://DbUser:SQLServer-DbPassw0rd@hostname:1433/testdb
-```
-
-``` yaml
-# .tbls.yml
-dsn: ms://DbUser:SQLServer-DbPassw0rd@localhost:1433/testdb
-```
 
 ### Document path
 

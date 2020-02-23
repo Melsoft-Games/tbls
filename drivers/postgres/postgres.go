@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/k1LoW/tbls/schema"
+	"github.com/Melsoft-Games/tbls/schema"
 	"github.com/pkg/errors"
 )
 
@@ -45,9 +45,6 @@ ORDER BY oid`, s.Name)
 		return errors.WithStack(err)
 	}
 
-	relations := []*schema.Relation{}
-
-	tables := []*schema.Table{}
 	for tableRows.Next() {
 		var (
 			tableOid    string
@@ -151,7 +148,7 @@ AND table_schema = $3;
 					Table: table,
 					Def:   constraintDef,
 				}
-				relations = append(relations, relation)
+				s.Relations = append(s.Relations, relation)
 			}
 			constraints = append(constraints, constraint)
 		}
@@ -289,13 +286,11 @@ ORDER BY ordinal_position
 		}
 		table.Indexes = indexes
 
-		tables = append(tables, table)
+		s.Tables = append(s.Tables, table)
 	}
 
-	s.Tables = tables
-
 	// Relations
-	for _, r := range relations {
+	for _, r := range s.Relations {
 		result := reFK.FindAllStringSubmatch(r.Def, -1)
 		strColumns := []string{}
 		for _, c := range strings.Split(result[0][1], ", ") {
@@ -328,8 +323,6 @@ ORDER BY ordinal_position
 			column.ChildRelations = append(column.ChildRelations, r)
 		}
 	}
-
-	s.Relations = relations
 
 	return nil
 }

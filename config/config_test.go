@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/k1LoW/tbls/schema"
+	"github.com/Melsoft-Games/tbls/schema"
 )
 
 func TestLoadDefault(t *testing.T) {
@@ -17,10 +17,6 @@ func TestLoadDefault(t *testing.T) {
 	err = config.Load(configFilepath)
 	if err != nil {
 		t.Fatal(err)
-	}
-	expected := ""
-	if config.DSN != expected {
-		t.Errorf("actual %v\nwant %v", config.DSN, expected)
 	}
 	expected2 := "dbdoc"
 	if config.DocPath != expected2 {
@@ -41,7 +37,7 @@ func TestLoadConfigFile(t *testing.T) {
 		t.Fatal(err)
 	}
 	expected := "pg://root:pgpass@localhost:55432/testdb?sslmode=disable"
-	if config.DSN != expected {
+	if config.DSN[0] != expected {
 		t.Errorf("actual %v\nwant %v", config.DSN, expected)
 	}
 	expected2 := "sample/pg"

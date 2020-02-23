@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"cloud.google.com/go/bigquery"
-	"github.com/k1LoW/tbls/schema"
+	"github.com/Melsoft-Games/tbls/schema"
 )
 
 var ctx context.Context

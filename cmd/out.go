@@ -24,17 +24,18 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
-	"github.com/k1LoW/tbls/config"
-	"github.com/k1LoW/tbls/datasource"
-	"github.com/k1LoW/tbls/output"
-	tbls_config "github.com/k1LoW/tbls/output/config"
-	"github.com/k1LoW/tbls/output/dot"
-	"github.com/k1LoW/tbls/output/json"
-	"github.com/k1LoW/tbls/output/md"
-	"github.com/k1LoW/tbls/output/plantuml"
-	"github.com/k1LoW/tbls/output/xlsx"
-	"github.com/k1LoW/tbls/output/yaml"
+	"github.com/Melsoft-Games/tbls/config"
+	"github.com/Melsoft-Games/tbls/datasource"
+	"github.com/Melsoft-Games/tbls/output"
+	tbls_config "github.com/Melsoft-Games/tbls/output/config"
+	"github.com/Melsoft-Games/tbls/output/dot"
+	"github.com/Melsoft-Games/tbls/output/json"
+	"github.com/Melsoft-Games/tbls/output/md"
+	"github.com/Melsoft-Games/tbls/output/plantuml"
+	"github.com/Melsoft-Games/tbls/output/xlsx"
+	"github.com/Melsoft-Games/tbls/output/yaml"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
@@ -148,7 +149,7 @@ func loadOutArgs(args []string) ([]config.Option, error) {
 		options = append(options, config.Sort(sort))
 	}
 	if len(args) == 1 {
-		options = append(options, config.DSN(args[0]))
+		options = append(options, config.DSN(strings.Split(args[0], ";")))
 	}
 	return options, nil
 }
