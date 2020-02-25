@@ -3,7 +3,9 @@ export GO111MODULE=on
 .PHONY: test
 
 build:
+	packr2
 	go build
+	packr2 clean
 
 test:
 	docker-compose up -d
